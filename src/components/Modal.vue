@@ -73,12 +73,12 @@ export default {
   data: () => ({
     text: false,
     valid: true,
-    name: "a",
+    name: "victor",
     nameRules: [
       (v) => !!v || "Nickname is required",
       (v) => (v && v.length <= 10) || "Name must be less than 10 characters",
     ],
-    email: "a@a.aa",
+    email: "victor@fiscalito.com",
     emailRules: [
       (v) => !!v || "E-mail is required",
       (v) =>
@@ -86,27 +86,38 @@ export default {
           v
         ) || "E-mail must be valid",
     ],
-    password: "a",
+    password: "fiscalito",
     checkbox: true,
   }),
   methods: {
   async submit() {
       if (this.$refs.form.validate()) {
-        // Native form submission is not yet supported
-        // axios.post("/api/submit", {
-        //   name: this.name,
-        //   email: this.email,
-        //   select: this.select,
-        //   checkbox: this.checkbox,
-        // });
-        await fetch("127.0.0.1:3000/hola").then(response=>{console.log(response.body)})
-        console.log("Holiii");
+       const user = await fetch("http://127.0.0.1:3000/hola")
+        .then(response=>response.json())
+        .then(data=>{
+          this.$store.commit("set_user", data)
+          return user;
+        })
+        .catch(error=>{console.log(error)});
+
+        // console.log(this.$store.state.user.date)
+        // null
+        // undefined
+        // false
+        // 
+        // 
+        console.log(user)
+        if(this.$store.state.user){
+          this.$router.push("Dashboard")
+        }
+        
       }
     },
     clear() {
       this.$refs.form.reset();
     },
   },
+  
 };
 </script>
 
